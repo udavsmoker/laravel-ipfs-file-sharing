@@ -8,6 +8,10 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
+
     <div class="card p-4 shadow-sm">
         <h2>Upload File</h2>
         <form action="{{ route('upload') }}" method="POST" enctype="multipart/form-data">

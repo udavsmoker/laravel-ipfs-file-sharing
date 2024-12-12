@@ -4,53 +4,49 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 
 class FileController extends Controller
 {
-    // File upload form
     public function index()
     {
         return view('file_upload');
     }
-// File doanload form
     public function downloadForm()
     {
         return view('file_download');
     }
 
-
-    // Handle file upload
     public function upload(Request $request)
     {
-        // Validation
-        $request->validate([
-            'file' => 'required|file|max:20480',
-            'password' => 'nullable|regex:/^[A-Za-z0-9]+$/', // Only allow alphanumeric characters for password
-        ]);
+        try {
+            $request->validate([
+                'file' => 'required|file|max:20480',
+                'password' => 'nullable|regex:/^[A-Za-z0-9]+$/', // Only allow alphanumeric characters for password
+            ]);
 
-        $file = $request->file('file');
-        $fileContents = file_get_contents($file);
+            $file = $request->file('file');
+            $fileContents = file_get_contents($file);
 
-        $password = $request->input('password');
-        if ($password) {
-            $encryptedContents = openssl_encrypt($fileContents, 'aes-256-cbc', $password, 0, str_repeat('0', 16));
-        } else {
-            $encryptedContents = encrypt($fileContents);
+            $password = $request->input('password');
+            if ($password) {
+                $encryptedContents = openssl_encrypt($fileContents, 'aes-256-cbc', $password, 0, str_repeat('0', 16));
+            } else {
+                $encryptedContents = encrypt($fileContents);
+            }
+
+            $extension = $file->getClientOriginalExtension();
+            $newFileName = 'file_' . now()->format('YmdHis') . '.' . $extension;
+
+            // Save the file
+            Storage::put($newFileName, $encryptedContents);
+
+            return redirect()->back()->with('success', 'File uploaded successfully!');
+        } catch (PostTooLargeException $e) {
+            return redirect()->back()->with('error', 'The uploaded file is too large.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while uploading the file. The file may be too large or the password may contain invalid characters.');
         }
-
-        $extension = $file->getClientOriginalExtension();
-        $newFileName = 'file_' . now()->format('YmdHis') . '.' . $extension;
-
-        $localPath = storage_path('app/encrypted_' . $newFileName);
-        file_put_contents($localPath, $encryptedContents);
-
-        $output = shell_exec("ipfs add -Q $localPath");
-        $ipfsHash = trim($output);
-
-        session()->put('file_password_' . $ipfsHash, $password);
-        session()->put('file_extension_' . $ipfsHash, $extension);
-
-        return back()->with('success', 'File uploaded to IPFS! Hash: ' . $ipfsHash);
     }
 
     public function download(Request $request, $hash)
