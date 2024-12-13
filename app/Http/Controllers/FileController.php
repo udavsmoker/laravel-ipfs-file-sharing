@@ -35,19 +35,26 @@ class FileController extends Controller
                 $encryptedContents = encrypt($fileContents);
             }
 
-            $extension = $file->getClientOriginalExtension();
-            $newFileName = 'file_' . now()->format('YmdHis') . '.' . $extension;
+            $tempFilePath = storage_path('app/temp_' . now()->format('YmdHis') . '.' . $file->getClientOriginalExtension());
+            file_put_contents($tempFilePath, $encryptedContents);
 
-            // Save the file
-            Storage::put($newFileName, $encryptedContents);
+            $output = shell_exec("ipfs add -q $tempFilePath");
+            $ipfsHash = trim($output);
 
-            return redirect()->back()->with('success', 'File uploaded successfully!');
+            unlink($tempFilePath);
+
+            if ($ipfsHash) {
+                return redirect()->back()->with('success', 'File uploaded to IPFS successfully! Hash: ' . $ipfsHash);
+            } else {
+                return redirect()->back()->with('error', 'Failed to upload the file to IPFS.');
+            }
         } catch (PostTooLargeException $e) {
             return redirect()->back()->with('error', 'The uploaded file is too large.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while uploading the file. The file may be too large or the password may contain invalid characters.');
+            return redirect()->back()->with('error', 'An error occurred while uploading the file.');
         }
     }
+
 
     public function download(Request $request, $hash)
     {
