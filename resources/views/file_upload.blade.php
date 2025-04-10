@@ -8,6 +8,13 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    @if (session('password'))
+    <div class="alert alert-warning" style="background-color: #ffeb3b; color: #000;">
+        <strong>Warning!</strong> Your password: {{ session('password') }}. {{ session('warning') }}
+    </div>
+@endif
+
+
     @if (session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif

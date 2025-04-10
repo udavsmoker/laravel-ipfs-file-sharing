@@ -35,4 +35,16 @@ document.addEventListener('DOMContentLoaded', function () {
             spinner.classList.remove('d-none');
         }
     });
+
+    var clipboard = new ClipboardJS('.copy-hash');
+
+    clipboard.on('success', function(e) {
+        alert('IPFS hash copied to clipboard!');
+        e.clearSelection();
+    });
+
+    clipboard.on('error', function(e) {
+        alert('Failed to copy the IPFS hash.');
+    });
 });
+

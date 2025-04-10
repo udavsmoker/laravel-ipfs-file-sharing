@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Exceptions\PostTooLargeException;
+use App\Models\File;
+use Illuminate\Support\Facades\Auth;
 
 class FileController extends Controller
 {
@@ -75,7 +77,16 @@ class FileController extends Controller
                 return redirect()->back()->with('error', 'Failed to upload the file to IPFS.');
             }
 
-            return redirect()->back()->with('success', 'File uploaded to IPFS successfully! Hash: ' . $ipfsHash);
+            File::create([
+                'filename' => $sanitizedFileName,
+                'path' => "ipfs_$ipfsHash/encrypted.dat",
+                'extension' => $sanitizedExtension,
+                'ipfs_hash' => $ipfsHash,
+                'user_id' => Auth::id(),
+            ]);
+            return redirect()->back()->with('success', 'File uploaded to IPFS successfully! Hash: ' . $ipfsHash)
+                ->with('password', $password)
+                ->with('warning', 'Remember, if you forget this password, you will lose access to the file.');
 
         } catch (PostTooLargeException $e) {
             return redirect()->back()->with('error', 'The uploaded file is too large.');

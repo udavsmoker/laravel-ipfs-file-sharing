@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\File;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $files = File::where('user_id', Auth::user()->id)->get();
+
+        $fileStats = [
+            'total' => $files->count(),
+            'active' => $files->where('active', true)->count(), // count only active files
+            'lastUpload' => $files->sortByDesc('created_at')->first()->created_at ?? 'N/A',
+        ];
+
+        return view('dashboard', compact('files', 'fileStats'));
     }
 }

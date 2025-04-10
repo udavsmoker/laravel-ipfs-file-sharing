@@ -4,67 +4,64 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Sharey') }}</title>
 
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @stack('styles')
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand text-white" href="#">Sharey</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{route('welcome')}}">Sharey</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('upload.form') }}">Upload</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('download.form') }}">Download</a>
-                    </li>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('upload.form') }}">Upload</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('download.form') }}">Download</a></li>
                     @guest
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                         @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                         @endif
                     @else
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();">
-                                {{ Auth::user()->name }} - {{ __('Logout') }}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                {{ Auth::user()->name }}
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('home') }}">Dashboard</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
                         </li>
                     @endguest
                 </ul>
             </div>
         </div>
     </nav>
-    <div id="app">
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
-    <footer>
-        <p class="text-muted">&copy; {{ date('Y') }} Sharey. All rights reserved.</p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    @stack('scripts')
 
+    <main class="flex-fill">
+        <div class="container py-4">
+            @yield('content')
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <small>&copy; {{ date('Y') }} Sharey. All rights reserved.</small>
+    </footer>
+
+    @stack('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 </body>
 </html>
