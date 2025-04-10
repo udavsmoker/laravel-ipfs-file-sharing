@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use App\Models\File;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ActivityLog;
 
 class FileController extends Controller
 {
@@ -84,6 +85,13 @@ class FileController extends Controller
                 'ipfs_hash' => $ipfsHash,
                 'user_id' => Auth::id(),
             ]);
+
+            ActivityLog::create([
+                'user_id' => Auth::id(),
+                'activity_type' => 'upload',
+                'description' => 'Uploaded file: ' . $sanitizedFileName . '.' . $sanitizedExtension,
+            ]);
+
             return redirect()->back()->with('success', 'File uploaded to IPFS successfully! Hash: ' . $ipfsHash)
                 ->with('password', $password)
                 ->with('warning', 'Remember, if you forget this password, you will lose access to the file.');
@@ -137,7 +145,11 @@ class FileController extends Controller
             $filename = $meta['filename'] ?? 'file_' . now()->format('YmdHis');
             $extension = $meta['extension'] ?? 'txt';
         }
-
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'activity_type' => 'download',
+            'description' => 'Downloaded file with hash: ' . $hash,
+        ]);
         return response($decryptedContent)
             ->header('Content-Type', 'application/octet-stream')
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '.' . $extension . '"');
