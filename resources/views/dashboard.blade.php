@@ -85,7 +85,7 @@
         <a href="#" class="btn btn-outline-dark">📈 Activity Logs</a>
         <a href="mailto:ilham.nabiyev@yahoo.com?subject=File Removal Request" class="btn btn-outline-danger">📧 Contact Us for File Removal</a>
         <a href="mailto:ilham.nabiyev@yahoo.com?subject=Dashboard Feedback" class="btn btn-outline-success">📬 Feedback</a>
-        <a href="#" class="btn btn-outline-secondary">🔒 Change Password</a>
+        <a href="{{route("password.change")}}" class="btn btn-outline-secondary">🔒 Change Password</a>
     </div>
 </div>
 @push('scripts')

@@ -2,6 +2,7 @@
 use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,6 @@ Route::post('/uploadfile', [FileController::class, 'upload'])->name('upload')->m
 Route::get('/download', [FileController::class, 'downloadForm'])->name('download.form')->middleware('auth', 'verified');
 Route::get('/downloadfile', [FileController::class, 'download'])->name('download')->middleware('auth', 'verified');
 
+
+Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm'])->name('password.change');
+Route::post('/change-password', [PasswordController::class, 'changePassword'])->name('password.update');
