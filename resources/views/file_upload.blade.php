@@ -14,20 +14,31 @@
 
     <div class="card p-4 shadow-sm">
         <h2>Upload File</h2>
-        <form action="{{ route('upload') }}" method="POST" enctype="multipart/form-data">
+        <form id="uploadForm" action="{{ route('upload') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="file" class="form-label">Choose file:</label>
-                <input type="file" name="file" class="form-control" required>
+                <input type="file" id="file" name="file" class="form-control" required>
+                <small class="text-muted">Maximum file size: 20 MB</small>
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password (optional):</label>
-                <input type="text" name="password" class="form-control" pattern="[A-Za-z0-9]+" placeholder="Enter password (alphanumeric)">
+                <input type="text" id="password" name="password" class="form-control" pattern="[A-Za-z0-9]+" placeholder="Enter password (alphanumeric)">
             </div>
 
             <button type="submit" class="btn btn-primary">Upload</button>
         </form>
     </div>
+    <div id="loadingSpinner" class="d-none text-center mt-3">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Uploading...</span>
+        </div>
+        <p class="mt-2">Uploading file, please wait...</p>
+    </div>
 </div>
+
+@push('scripts')
+<script src="{{ asset('js/upload.js') }}"></script>
+@endpush
 @endsection

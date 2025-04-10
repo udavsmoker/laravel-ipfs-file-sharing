@@ -18,10 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/upload', [FileController::class, 'index'])->name('upload.form')->middleware('auth');
-Route::post('/uploadfile', [FileController::class, 'upload'])->name('upload')->middleware('auth');
-Route::get('/download', [FileController::class, 'downloadForm'])->name('download.form')->middleware('auth');
-Route::get('/downloadfile/{hash}', [FileController::class, 'download'])->name('download')->middleware('auth');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/upload', [FileController::class, 'index'])->name('upload.form')->middleware('auth', 'verified');
+Route::post('/uploadfile', [FileController::class, 'upload'])->name('upload')->middleware('auth', 'verified');
+Route::get('/download', [FileController::class, 'downloadForm'])->name('download.form')->middleware('auth', 'verified');
+Route::get('/downloadfile', [FileController::class, 'download'])->name('download')->middleware('auth', 'verified');
+

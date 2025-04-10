@@ -27,4 +27,13 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof \Illuminate\Http\Exceptions\PostTooLargeException) {
+            error_log('File size exceeds the maximum limit.');
+            return redirect()->back()->with('error', 'The uploaded file is too large. Please upload a smaller file.');
+        }
+
+        return parent::render($request, $exception);
+    }
 }

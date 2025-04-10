@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Sharey') }}</title>
 
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -17,7 +17,7 @@
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-light bg-dark mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand text-white" href="#">Secure File Sharing</a>
+            <a class="navbar-brand text-white" href="#">Sharey</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -59,7 +59,12 @@
             @yield('content')
         </main>
     </div>
+    <footer>
+        <p class="text-muted">&copy; {{ date('Y') }} Sharey. All rights reserved.</p>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
+
 </body>
 </html>
