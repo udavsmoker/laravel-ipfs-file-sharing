@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,6 +38,23 @@ class Handler extends ExceptionHandler
             return redirect()->back()->with('error', 'The uploaded file is too large. Please upload a smaller file.');
         }
 
+        if ($exception instanceof AuthorizationException) {
+            // if (!$request->user()) {
+                return redirect()->guest(route('login'));
+            // }
+
+            //return response()->view('errors.403', [], 403);
+        }
+
         return parent::render($request, $exception);
     }
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['message' => $exception->getMessage()], 401);
+        }
+
+        return redirect()->guest(route('login'));
+    }
+
 }

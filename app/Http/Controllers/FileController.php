@@ -23,6 +23,8 @@ class FileController extends Controller
                 'file' => 'required|file|max:20480',
                 'password' => 'nullable|regex:/^[A-Za-z0-9]+$/',
             ]);
+            $disallowedExtensions = ['exe', 'sh', 'bat', 'php', 'js', 'html', 'vbs', 'msi', 'pl', 'py', 'cgi', 'asp', 'aspx', 'dll', 'bat', 'com', 'rb', 'wsf', 'jar', 'msm', 'iso', 'apk', 'sys', 'tmp', 'dat'];
+
 
             $file = $request->file('file');
 
@@ -34,6 +36,10 @@ class FileController extends Controller
             //Sanitizing file name
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
+
+            if (in_array($extension, $disallowedExtensions)) {
+                return redirect()->back()->with('error', 'This file type is not allowed for upload. Please compress your file into a zip archive and try again.');
+            }
 
             $sanitizedFileName = substr(preg_replace('/[^a-zA-Z0-9._-]/', '_', $originalName), 0, 255);
             $sanitizedExtension = preg_replace('/[^a-zA-Z0-9]/', '', $extension);

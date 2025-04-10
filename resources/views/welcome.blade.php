@@ -87,7 +87,7 @@
             <div class="d-flex justify-content-center mt-4">
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="btn btn-primary mx-2">Go to Dashboard</a>
+                        <a href="{{ route('home') }}" class="btn btn-primary mx-2">Go to Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-primary mx-2">Login</a>
                         @if (Route::has('register'))
