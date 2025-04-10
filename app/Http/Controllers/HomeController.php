@@ -35,4 +35,9 @@ class HomeController extends Controller
 
         return view('dashboard', compact('files', 'fileStats'));
     }
+
+    public function howitworks()
+    {
+        return view('howitworks');
+    }
 }

@@ -81,7 +81,7 @@
 
     <div class="dashboard-actions d-flex gap-3 justify-content-center border-top mt-5 pt-3">
         <a href="#" class="btn btn-warning">🚀 Switch to Pro</a>
-        <a href="#" class="btn btn-outline-secondary">💡 How It Works</a>
+        <a href="{{route("howitworks")}}" class="btn btn-outline-secondary">💡 How It Works</a>
         <a href="#" class="btn btn-outline-dark">📈 Activity Logs</a>
         <a href="mailto:ilham.nabiyev@yahoo.com?subject=File Removal Request" class="btn btn-outline-danger">📧 Contact Us for File Removal</a>
         <a href="mailto:ilham.nabiyev@yahoo.com?subject=Dashboard Feedback" class="btn btn-outline-success">📬 Feedback</a>

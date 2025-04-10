@@ -22,6 +22,7 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/howitworks', [App\Http\Controllers\HomeController::class, 'howitworks'])->name('howitworks');
 Route::get('/upload', [FileController::class, 'index'])->name('upload.form')->middleware('auth', 'verified');
 Route::post('/uploadfile', [FileController::class, 'upload'])->name('upload')->middleware('auth', 'verified');
 Route::get('/download', [FileController::class, 'downloadForm'])->name('download.form')->middleware('auth', 'verified');
