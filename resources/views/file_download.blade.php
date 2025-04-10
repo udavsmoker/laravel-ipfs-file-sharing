@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Download File')
 @section('content')
     <div class="container my-5">
         <h1 class="text-center mb-4">Download</h1>

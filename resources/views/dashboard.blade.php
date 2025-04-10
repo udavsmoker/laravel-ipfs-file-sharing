@@ -80,7 +80,7 @@
     </div>
 
     <div class="dashboard-actions d-flex gap-3 justify-content-center border-top mt-5 pt-3">
-        <a href="#" class="btn btn-warning">🚀 Switch to Pro</a>
+        <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#proModal">🚀 Switch to Pro</a>
         <a href="{{route("howitworks")}}" class="btn btn-outline-secondary">💡 How It Works</a>
         <a href="{{route("activitylogs")}}" class="btn btn-outline-dark">📈 Activity Logs</a>
         <a href="mailto:ilham.nabiyev@yahoo.com?subject=File Removal Request" class="btn btn-outline-danger">📧 Contact Us for File Removal</a>
@@ -88,6 +88,28 @@
         <a href="{{route("password.change")}}" class="btn btn-outline-secondary">🔒 Change Password</a>
     </div>
 </div>
+
+<!-- Modal for "Switch to Pro" -->
+<div class="modal fade" id="proModal" tabindex="-1" aria-labelledby="proModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="proModalLabel">Get Pro Features</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>To unlock pro features, contact us via one of the following options:</p>
+                <div class="d-flex gap-3 mt-3">
+                    <a href="https://t.me/ohw911" class="btn btn-outline-primary" target="_blank">Telegram</a>
+                    <a href="https://wa.me/+994507176633" class="btn btn-outline-success" target="_blank">WhatsApp</a>
+                    <a href="mailto:ilham.nabiyev@yahoo.com?subject=Pro Features Inquiry" class="btn btn-outline-danger" target="_blank">Email</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
