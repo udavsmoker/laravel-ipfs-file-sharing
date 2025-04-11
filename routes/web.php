@@ -31,5 +31,5 @@ Route::get('/download', [FileController::class, 'downloadForm'])->name('download
 Route::get('/downloadfile', [FileController::class, 'download'])->name('download')->middleware('auth', 'verified');
 
 
-Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm'])->name('password.change');
-Route::post('/change-password', [PasswordController::class, 'changePassword'])->name('password.update');
+Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm'])->name('password-change');
+Route::post('/change-password', [PasswordController::class, 'changePassword'])->name('password-update');
